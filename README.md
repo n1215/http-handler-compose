@@ -6,10 +6,17 @@ See www/index.php
 
     /**
      * @var HttpHandlerInterface $helloWorld
+     * @var HttpHandlerInterface $helloRepeat
      * @var HttpHandlerInterface $addHtmlHeader
      * @var HttpHandlerInterface $addHtmlFooter
      */
     $helloWorld = new HelloWorld();
+
+    $helloRepeat = __()
+        ->pipe(Writer::setStatusCode(200))
+        ->repeat($helloWorld, 5)
+        ->map(new BenchMarker());
+
     $addHtmlHeader = Writer::addBody("<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title>Title</title>\n</head>\n<body>\n");
     $addHtmlFooter = Writer::addBody("</body>\n</html>\n");
 
