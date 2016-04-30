@@ -1,0 +1,24 @@
+{
+    "name": "n1215/http-handler-compose",
+    "description": "HttpHandler composition library.",
+    "keywords": ["psr-7", "http", "http-message", "handler", "combinator"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "n1215"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "n1215/http-context": "^0.1.0"
+    },
+    "require-dev": {
+        "n1215/http-context-sample": "^0.1.0",
+        "zendframework/zend-diactoros": "^1.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "N1215\\Http\\Context\\": "src/"
+        }
+    }
+}
