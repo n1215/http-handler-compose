@@ -15,6 +15,7 @@ use N1215\Http\Context\Matcher\ContextMatcherInterface;
 use N1215\Http\Context\Matcher\ContextMatchResultInterface;
 use N1215\Http\Context\Matcher\Route\Route;
 use N1215\Http\Context\Interceptor\HandlerInterceptor;
+use N1215\Http\Context\Handler\Control\Control;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\Diactoros\Response;
 
@@ -73,32 +74,30 @@ compose_application: {
     $helloWorld = new HelloWorld();
     
     $helloRepeat = __()
-        ->pipe(Writer::setStatusCode(200))
-        ->repeat($helloWorld, 5)
+        ->then(Writer::setStatusCode(200))
+        ->then(Control::repeat($helloWorld, 5))
         ->map(new BenchMarker());
 
     $addHtmlHeader = Writer::addBody("<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title>Title</title>\n</head>\n<body>\n");
     $addHtmlFooter = Writer::addBody("</body>\n</html>\n");
     
     $app = __()
-        ->pipe($addHtmlHeader)
-        ->switch([
+        ->then($addHtmlHeader)
+        ->then(Control::switch([
             [new MaintenanceMode(), ServerError::serviceUnavailable('maintenance mode')],
             [Route::get('/'), $helloWorld],
             [Route::get('/repeat'), $helloRepeat],
             [Route::all(), ClientError::notFound('page not found')],
-        ])
+        ]))
         ->wrappedIn(new BenchMarker())
-        ->pipe($addHtmlFooter);
+        ->then($addHtmlFooter)
+        ->always(new ResponseSender());
 }
 
 // create context
 $context = new HttpContext(ServerRequestFactory::fromGlobals(), new Response());
 
 // app handles context
-$newContext = $app->__invoke($context);
-
-// send http response
-$newContext->handledBy(new ResponseSender());
+$app->__invoke($context);
 
 exit();

@@ -1,39 +1,34 @@
 <?php
 
-namespace N1215\Http\Context\Handler;
+namespace N1215\Http\Context\Handler\Control;
 
 use N1215\Http\Context\HttpContextInterface;
 use N1215\Http\Context\HttpHandlerInterface;
 use N1215\Http\Context\Specification\ContextSpecificationInterface;
 
-class WhileHandler implements HttpHandlerInterface {
-
-    /**
-     * @var ContextSpecificationInterface
-     */
-    protected $spec;
+class RepeatHandler implements HttpHandlerInterface {
 
     /**
      * @var HttpHandlerInterface
      */
-    protected $loop;
+    private $loop;
 
-    public function __construct(
-        ContextSpecificationInterface $spec,
-        HttpHandlerInterface $loop
-    )
+    /**
+     * @var int
+     */
+    private $times;
+
+    public function __construct(HttpHandlerInterface $loop, int $times)
     {
-        $this->spec = $spec;
         $this->loop = $loop;
+        $this->times = $times;
     }
-
 
     public function __invoke(HttpContextInterface $context) : HttpContextInterface
     {
-        while ($this->spec->isSatisfiedBy($context)) {
+        for ($i = 0; $i < $this->times; $i++) {
             $context = $this->loop->__invoke($context);
         }
-
         return $context;
     }
 }

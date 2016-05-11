@@ -1,6 +1,6 @@
 <?php
 
-namespace N1215\Http\Context\Handler;
+namespace N1215\Http\Context\Handler\Control;
 
 use N1215\Http\Context\HttpContextInterface;
 use N1215\Http\Context\HttpHandlerInterface;
