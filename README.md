@@ -1,9 +1,9 @@
 # Compose Application using HttpContextInterface and HttpHandlerInterface
 See www/index.php
 
-
 #### compose: HttpHandler × HttpHandler -> HttpHandler
 
+```php
     /**
      * @var HttpHandlerInterface $helloWorld
      * @var HttpHandlerInterface $helloRepeat
@@ -42,12 +42,14 @@ See www/index.php
 
     // send http response
     $newContext->handledBy(new ResponseSender());
-
+```
 
 # Interfaces
 
 ### HttpContext
 HttpContext holds PSR-7 HTTP request, HTTP response, and state.
+
+```php
 
     interface HttpContextInterface
     {
@@ -66,16 +68,18 @@ HttpContext holds PSR-7 HTTP request, HTTP response, and state.
         public function handledBy(HttpHandlerInterface $handler): HttpContextInterface;
 
     }
-
+```         
 
 ### HttpHandler
 Handles HttpContext.
 An abstraction of Http middlewares, HTTP applications, or controller actions in typical MVC web frameworks.
 
+```php
     interface HttpHandlerInterface
     {
         public function __invoke(HttpContextInterface $context) : HttpContextInterface;
     }
+```
 
 ### ContextSpecification
 the specification pattern.
