@@ -1,6 +1,6 @@
 <?php
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 use N1215\Http\Context\HttpContextInterface;
 use N1215\Http\Context\Sample\HttpContext;
@@ -15,8 +15,8 @@ use N1215\Http\Context\Matcher\ContextMatcherInterface;
 use N1215\Http\Context\Matcher\ContextMatchResultInterface;
 use N1215\Http\Context\Matcher\Route\Route;
 use N1215\Http\Context\Interceptor\HandlerInterceptor;
-use Zend\Diactoros\ServerRequestFactory;
-use Zend\Diactoros\Response;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\Response;
 
 
 class BenchMarker extends HandlerInterceptor
